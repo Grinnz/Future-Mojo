@@ -17,6 +17,18 @@ sub new {
 	return $self;
 }
 
+sub new_timer {
+	my $proto = shift;
+	my $self = $proto->new(shift);
+	my ($after) = @_;
+	
+	my $id = $self->loop->timer($after => sub { $self->done });
+	
+	$self->on_cancel(sub { shift->loop->remove($id) });
+	
+	return $self;
+}
+
 sub loop { shift->{loop} }
 
 sub await { shift->{loop}->one_tick }
@@ -67,6 +79,20 @@ instance, allowing the C<await> method to block until the Future is ready.
 
 For a full description on how to use Futures, see the L<Future> documentation.
 
+=head1 CONSTRUCTORS
+
+=head2 new
+
+ my $future = Future::Mojo->new($loop);
+
+Returns a new Future.
+
+=head2 new_timer
+
+ my $future = Future::Mojo->new_timer($loop, $seconds);
+
+Returns a new Future that will become ready after the specified delay.
+
 =head1 METHODS
 
 L<Future::Mojo> inherits all methods from L<Future> and implements the
@@ -82,7 +108,8 @@ Returns the underlying L<Mojo::IOLoop> object.
 
  $future->await until $future->is_ready;
 
-Runs an iteration of the underlying L<Mojo::IOLoop>.
+Runs an iteration of the underlying L<Mojo::IOLoop>, used by L<Future/"get"> to
+wait for the future to be ready.
 
 =head2 done_next_tick
 

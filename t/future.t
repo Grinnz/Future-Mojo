@@ -45,4 +45,25 @@ my $loop = Mojo::IOLoop->new;
 	is_deeply [$future->failure], ["deferred exception\n"], '$future now ready after $future->await';
 }
 
+# new_timer
+{
+	my $future = Future::Mojo->new_timer($loop, 0.1);
+	
+	$future->await until $future->is_ready;
+	ok $future->is_ready, '$future is ready from new_timer';
+	is_deeply [$future->get], [], '$future->get returns empty list on new_timer';
+}
+
+# timer cancellation
+{
+	my $called;
+	my $future = Future::Mojo->new_timer($loop, 0.1)->on_done(sub { $called++ });
+	
+	$future->cancel;
+	
+	Future::Mojo->new_timer($loop, 0.3)->get;
+	
+	ok !$called, '$future->cancel cancels a pending timer';
+}
+
 done_testing;
