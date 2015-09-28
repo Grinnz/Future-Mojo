@@ -58,6 +58,17 @@
       }
    },
    "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/Grinnz/Future-Mojo/issues"
+      },
+      "homepage" : "https://github.com/Grinnz/Future-Mojo",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/Grinnz/Future-Mojo.git",
+         "web" : "https://github.com/Grinnz/Future-Mojo"
+      }
+   },
    "version" : "0.001",
    "x_contributors" : [
       "Dan Book <grinnz@grinnz.com>"
