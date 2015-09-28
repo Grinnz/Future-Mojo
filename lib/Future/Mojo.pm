@@ -25,7 +25,7 @@ sub new_timer {
 	
 	my $weakself = $self;
 	weaken $weakself;
-	my $id = $self->loop->timer($after => sub { $weakself->done });
+	my $id = $self->loop->timer($after => sub { $weakself->done if $weakself });
 	
 	$self->on_cancel(sub { shift->loop->remove($id) });
 	
@@ -41,7 +41,7 @@ sub done_next_tick {
 	my @result = @_;
 	
 	weaken $self;
-	$self->loop->next_tick(sub { $self->done(@result) });
+	$self->loop->next_tick(sub { $self->done(@result) if $self });
 	
 	return $self;
 }
@@ -53,7 +53,7 @@ sub fail_next_tick {
 	croak 'Expected a true exception' unless $exception;
 	
 	weaken $self;
-	$self->loop->next_tick(sub { $self->fail($exception, @details) });
+	$self->loop->next_tick(sub { $self->fail($exception, @details) if $self });
 	
 	return $self;
 }
