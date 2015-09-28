@@ -60,19 +60,17 @@ wait for the future to be ready.
 
  $future = $future->done_next_tick(@result);
 
-A shortcut to calling the C<Future/"done"> method in a
-L<Mojo::IOLoop/"next_tick"> on the underlying L<Mojo::IOLoop>. Ensures that a
-returned Future object is not ready immediately, but will wait for the next IO
-round.
+A shortcut to calling the L<Future/"done"> method on the
+L<Mojo::IOLoop/"next_tick">. Ensures that a returned Future object is not ready
+immediately, but will wait for the next I/O round.
 
 =head2 fail_next_tick
 
  $future = $future->fail_next_tick($exception, @details);
 
-A shortcut to calling the L<Future/"fail"> method in a
-L<Mojo::IOLoop/"next_tick"> on the underlying L<Mojo::IOLoop>. Ensures that a
-returned Future object is not ready immediately, but will wait for the next IO
-round.
+A shortcut to calling the L<Future/"fail"> method on the
+L<Mojo::IOLoop/"next_tick">. Ensures that a returned Future object is not ready
+immediately, but will wait for the next I/O round.
 
 =head1 BUGS
 
