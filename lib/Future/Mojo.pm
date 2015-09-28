@@ -34,7 +34,7 @@ sub new_timer {
 
 sub loop { shift->{loop} }
 
-sub await { shift->{loop}->one_tick }
+sub await { $_[0]->{loop}->one_tick until $_[0]->is_ready }
 
 sub done_next_tick {
 	my $self = shift;
@@ -111,10 +111,9 @@ Returns the underlying L<Mojo::IOLoop> object.
 
 =head2 await
 
- $future->await until $future->is_ready;
+ $future->await;
 
-Runs an iteration of the underlying L<Mojo::IOLoop>, used by L<Future/"get"> to
-wait for the future to be ready.
+Runs the underlying L<Mojo::IOLoop> until the future is ready.
 
 =head2 done_next_tick
 

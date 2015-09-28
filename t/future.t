@@ -38,7 +38,7 @@ my $loop = Mojo::IOLoop->new;
 	identical $future->fail_next_tick("deferred exception\n"), $future, '->fail_next_tick returns $future';
 	ok !$future->is_ready, '$future not yet ready after ->fail_next_tick';
 	
-	$future->await until $future->is_ready;
+	$future->await;
 	
 	is_deeply [$future->failure], ["deferred exception\n"], '$future now ready after $future->await';
 }
@@ -47,7 +47,7 @@ my $loop = Mojo::IOLoop->new;
 {
 	my $future = Future::Mojo->new_timer($loop, 0.1);
 	
-	$future->await until $future->is_ready;
+	$future->await;
 	ok $future->is_ready, '$future is ready from new_timer';
 	is_deeply [$future->get], [], '$future->get returns empty list on new_timer';
 }

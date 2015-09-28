@@ -51,10 +51,9 @@ Returns the underlying L<Mojo::IOLoop> object.
 
 =head2 await
 
- $future->await until $future->is_ready;
+ $future->await;
 
-Runs an iteration of the underlying L<Mojo::IOLoop>, used by L<Future/"get"> to
-wait for the future to be ready.
+Runs the underlying L<Mojo::IOLoop> until the future is ready.
 
 =head2 done_next_tick
 
