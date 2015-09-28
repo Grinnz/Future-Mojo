@@ -3,6 +3,7 @@ package Future::Mojo;
 use strict;
 use warnings;
 use Carp 'croak';
+use Scalar::Util 'weaken';
 
 use parent 'Future';
 
@@ -22,7 +23,9 @@ sub new_timer {
 	my $self = $proto->new(shift);
 	my ($after) = @_;
 	
-	my $id = $self->loop->timer($after => sub { $self->done });
+	my $weakself = $self;
+	weaken $weakself;
+	my $id = $self->loop->timer($after => sub { $weakself->done });
 	
 	$self->on_cancel(sub { shift->loop->remove($id) });
 	
@@ -37,6 +40,7 @@ sub done_next_tick {
 	my $self = shift;
 	my @result = @_;
 	
+	weaken $self;
 	$self->loop->next_tick(sub { $self->done(@result) });
 	
 	return $self;
@@ -48,6 +52,7 @@ sub fail_next_tick {
 	
 	croak 'Expected a true exception' unless $exception;
 	
+	weaken $self;
 	$self->loop->next_tick(sub { $self->fail($exception, @details) });
 	
 	return $self;

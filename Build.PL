@@ -82,7 +82,9 @@ EOW
       "module_name" => "Future::Mojo",
       "recursive_test_files" => 1,
       "requires" => {
+        "Carp" => 0,
         "Future" => "0.33",
+        "Scalar::Util" => 0,
         "parent" => 0,
         "perl" => "5.010001"
       },
