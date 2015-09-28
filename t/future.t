@@ -7,8 +7,6 @@ use Test::More;
 use Test::Identity;
 
 use Mojo::IOLoop;
-
-use Future;
 use Future::Mojo;
 
 my $loop = Mojo::IOLoop->new;
