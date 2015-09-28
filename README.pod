@@ -1,47 +1,4 @@
-package Future::Mojo;
-
-use strict;
-use warnings;
-use Carp 'croak';
-
-use parent 'Future';
-
-our $VERSION = '0.001';
-
-sub new {
-	my $proto = shift;
-	my $self = $proto->SUPER::new;
-	
-	$self->{loop} = ref $proto ? $proto->{loop} : shift;
-	
-	return $self;
-}
-
-sub loop { shift->{loop} }
-
-sub await { shift->{loop}->one_tick }
-
-sub done_next_tick {
-	my $self = shift;
-	my @result = @_;
-	
-	$self->loop->next_tick(sub { $self->done(@result) });
-	
-	return $self;
-}
-
-sub fail_next_tick {
-	my $self = shift;
-	my ($exception, @details) = @_;
-	
-	croak 'Expected a true exception' unless $exception;
-	
-	$self->loop->next_tick(sub { $self->fail($exception, @details) });
-	
-	return $self;
-}
-
-1;
+=pod
 
 =head1 NAME
 
@@ -121,3 +78,5 @@ This is free software, licensed under:
 =head1 SEE ALSO
 
 L<Future>
+
+=cut
