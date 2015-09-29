@@ -59,8 +59,9 @@ my $loop = Mojo::IOLoop->new;
 	
 	$future->cancel;
 	
-	Future::Mojo->new_timer($loop, 0.3)->get;
+	Future::Mojo->new_timer($loop, 0.3)->await;
 	
+	ok $future->is_ready, '$future has been canceled';
 	ok !$called, '$future->cancel cancels a pending timer';
 }
 
