@@ -84,12 +84,12 @@ EOW
       "requires" => {
         "Carp" => 0,
         "Future" => "0.33",
+        "Mojolicious" => "5.0",
         "Scalar::Util" => 0,
         "parent" => 0,
         "perl" => "5.010001"
       },
       "test_requires" => {
-        "Mojolicious" => "6.0",
         "Test::Identity" => 0,
         "Test::More" => "0.88"
       }
@@ -97,7 +97,6 @@ EOW
 
 
     my %fallback_build_requires = (
-      "Mojolicious" => "6.0",
       "Test::Identity" => 0,
       "Test::More" => "0.88"
     );
