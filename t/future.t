@@ -72,11 +72,11 @@ my $loop = Mojo::IOLoop->new;
 	
 	my $errored;
 	my $done = Future::Mojo->new($loop)->done_next_tick('first_result')->on_done(sub {
-		eval { $future->get } or $errored = 1;
+		eval { $future->await } or $errored = 1;
 	})->get;
 	
 	is $done, 'first_result', 'first future completed';
-	ok $errored, '$future->get in a running event loop throws an error';
+	ok $errored, '$future->await in a running event loop throws an error';
 }
 
 done_testing;

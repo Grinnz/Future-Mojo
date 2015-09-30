@@ -37,7 +37,7 @@ sub loop { shift->{loop} }
 sub await {
 	my $self = shift;
 	croak 'Awaiting a future while the event loop is running would recurse'
-		if !$self->is_ready and $self->{loop}->is_running;
+		if $self->{loop}->is_running;
 	$self->{loop}->one_tick until $self->is_ready;
 }
 
@@ -118,8 +118,8 @@ Returns the underlying L<Mojo::IOLoop> object.
 
  $future->await;
 
-Runs the underlying L<Mojo::IOLoop> until the future is ready. If the future is
-not ready and the event loop is already running, an exception is thrown.
+Runs the underlying L<Mojo::IOLoop> until the future is ready. If the event
+loop is already running, an exception is thrown.
 
 =head2 done_next_tick
 
