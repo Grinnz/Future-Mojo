@@ -7,7 +7,7 @@ use Scalar::Util 'weaken';
 
 use parent 'Future';
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 sub new {
 	my $proto = shift;
