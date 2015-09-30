@@ -1,4 +1,6 @@
 {{$NEXT}}
+  - await() will now throw an exception if the future is not ready and the
+    event loop is already running, to avoid event loop recursion
 
 0.001     2015-09-28 21:45:38 EDT
   - First release

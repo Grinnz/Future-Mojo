@@ -65,4 +65,18 @@ my $loop = Mojo::IOLoop->new;
 	ok !$called, '$future->cancel cancels a pending timer';
 }
 
+# loop recursion
+{
+	my $future = Future::Mojo->new_timer($loop, 0.1);
+	Future::Mojo->new_timer($loop, 0.5)->on_done(sub { $future->done('safeguard') });
+	
+	my $errored;
+	my $done = Future::Mojo->new($loop)->done_next_tick('first_result')->on_done(sub {
+		eval { $future->get } or $errored = 1;
+	})->get;
+	
+	is $done, 'first_result', 'first future completed';
+	ok $errored, '$future->get in a running event loop throws an error';
+}
+
 done_testing;
