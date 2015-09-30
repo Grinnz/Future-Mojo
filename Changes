@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.002     2015-09-30 13:05:41 EDT
   - await() will now throw an exception if the event loop is already running,
     to avoid event loop recursion in a get() or failure()
 
