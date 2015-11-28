@@ -6,24 +6,19 @@ BEGIN { $ENV{MOJO_REACTOR} = 'Mojo::Reactor::Poll' }
 use Test::More;
 use Test::Identity;
 
-use Mojo::IOLoop;
 use Future::Mojo;
 
-my $loop = Mojo::IOLoop->new;
-
 {
-	my $future = Future::Mojo->new($loop);
+	my $future = Future::Mojo->new();
 	
-	identical $future->loop, $loop, '$future->loop yields $loop';
-	
-	$loop->next_tick(sub { $future->done('result') });
+	$future->loop->next_tick(sub { $future->done('result') });
 	
 	is_deeply [$future->get], ['result'], '$future->get on Future::Mojo';
 }
 
 # done_next_tick
 {
-	my $future = Future::Mojo->new($loop);
+	my $future = Future::Mojo->new();
 	
 	identical $future->done_next_tick('deferred result'), $future, '->done_next_tick returns $future';
 	ok !$future->is_ready, '$future not yet ready after ->done_next_tick';
@@ -33,7 +28,7 @@ my $loop = Mojo::IOLoop->new;
 
 # fail_next_tick
 {
-	my $future = Future::Mojo->new($loop);
+	my $future = Future::Mojo->new();
 	
 	identical $future->fail_next_tick("deferred exception\n"), $future, '->fail_next_tick returns $future';
 	ok !$future->is_ready, '$future not yet ready after ->fail_next_tick';
@@ -71,7 +66,7 @@ my $loop = Mojo::IOLoop->new;
 	Future::Mojo->new_timer(0.5)->on_done(sub { $future->done('safeguard') });
 	
 	my $errored;
-	my $done = Future::Mojo->new($loop)->done_next_tick('first_result')->on_done(sub {
+	my $done = Future::Mojo->new->done_next_tick('first_result')->on_done(sub {
 		eval { $future->await } or $errored = 1;
 	})->get;
 	
