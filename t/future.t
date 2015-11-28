@@ -9,7 +9,7 @@ use Test::Identity;
 use Mojo::IOLoop;
 use Future::Mojo;
 
-my $loop = Mojo::IOLoop->singleton;
+my $loop = Mojo::IOLoop->new;
 
 {
 	my $future = Future::Mojo->new($loop);
@@ -45,7 +45,7 @@ my $loop = Mojo::IOLoop->singleton;
 
 # new_timer
 {
-	my $future = Future::Mojo->new_timer(0.1);
+	my $future = Future::Mojo->new_timer($loop, 0.1);
 	
 	$future->await;
 	ok $future->is_ready, '$future is ready from new_timer';
@@ -55,11 +55,11 @@ my $loop = Mojo::IOLoop->singleton;
 # timer cancellation
 {
 	my $called;
-	my $future = Future::Mojo->new_timer(0.1)->on_done(sub { $called++ });
+	my $future = Future::Mojo->new_timer($loop, 0.1)->on_done(sub { $called++ });
 	
 	$future->cancel;
 	
-	Future::Mojo->new_timer(0.3)->await;
+	Future::Mojo->new_timer($loop, 0.3)->await;
 	
 	ok $future->is_ready, '$future has been canceled';
 	ok !$called, '$future->cancel cancels a pending timer';
@@ -67,8 +67,8 @@ my $loop = Mojo::IOLoop->singleton;
 
 # loop recursion
 {
-	my $future = Future::Mojo->new_timer(0.1);
-	Future::Mojo->new_timer(0.5)->on_done(sub { $future->done('safeguard') });
+	my $future = Future::Mojo->new_timer($loop, 0.1);
+	Future::Mojo->new_timer($loop, 0.5)->on_done(sub { $future->done('safeguard') });
 	
 	my $errored;
 	my $done = Future::Mojo->new($loop)->done_next_tick('first_result')->on_done(sub {

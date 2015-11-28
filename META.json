@@ -4,7 +4,7 @@
       "Dan Book <dbook@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.039, CPAN::Meta::Converter version 2.150005",
+   "generated_by" : "Dist::Zilla version 5.041, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "artistic_2"
    ],
@@ -15,12 +15,12 @@
    "name" : "Future-Mojo",
    "no_index" : {
       "directory" : [
-         "t",
-         "xt",
+         "eg",
+         "examples",
          "inc",
          "share",
-         "eg",
-         "examples"
+         "t",
+         "xt"
       ]
    },
    "prereqs" : {
@@ -56,7 +56,7 @@
    "provides" : {
       "Future::Mojo" : {
          "file" : "lib/Future/Mojo.pm",
-         "version" : "0.002"
+         "version" : "0.003"
       }
    },
    "release_status" : "stable",
@@ -71,9 +71,10 @@
          "web" : "https://github.com/Grinnz/Future-Mojo"
       }
    },
-   "version" : "0.002",
+   "version" : "0.003",
    "x_contributors" : [
-      "Dan Book <grinnz@grinnz.com>"
+      "Dan Book <grinnz@grinnz.com>",
+      "Jose Luis Martinez <jlmartinez@capside.com>"
    ]
 }
 

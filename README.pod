@@ -28,15 +28,18 @@ For a full description on how to use Futures, see the L<Future> documentation.
 
 =head2 new
 
+ my $future = Future::Mojo->new;
  my $future = Future::Mojo->new($loop);
 
-Returns a new Future.
+Returns a new Future. Uses L<Mojo::IOLoop/"singleton"> if no loop is specified.
 
 =head2 new_timer
 
+ my $future = Future::Mojo->new_timer($seconds);
  my $future = Future::Mojo->new_timer($loop, $seconds);
 
-Returns a new Future that will become ready after the specified delay.
+Returns a new Future that will become ready after the specified delay. Uses
+L<Mojo::IOLoop/"singleton"> if no loop is specified.
 
 =head1 METHODS
 

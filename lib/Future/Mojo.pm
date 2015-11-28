@@ -3,7 +3,7 @@ package Future::Mojo;
 use strict;
 use warnings;
 use Carp 'croak';
-use Scalar::Util 'weaken';
+use Scalar::Util 'blessed', 'weaken';
 use Mojo::IOLoop;
 
 use parent 'Future';
@@ -14,19 +14,18 @@ sub new {
 	my $proto = shift;
 	my $self = $proto->SUPER::new;
 	
-	$self->{loop} = ref $proto ? $proto->{loop} : shift;
-        $self->{loop} = Mojo::IOLoop->singleton if (not defined $self->{loop});
+	$self->{loop} = ref $proto ? $proto->{loop} : (shift() // Mojo::IOLoop->singleton);
 	
 	return $self;
 }
 
 sub new_timer {
 	my $proto = shift;
-	my $self = __PACKAGE__->new();
+	my $self = (blessed $_[0] and $_[0]->isa('Mojo::IOLoop'))
+		? $proto->new(shift) : $proto->new;
 	my ($after) = @_;
 	
-	my $weakself = $self;
-	weaken $weakself;
+	weaken(my $weakself = $self);
 	my $id = $self->loop->timer($after => sub { $weakself->done if $weakself });
 	
 	$self->on_cancel(sub { shift->loop->remove($id) });
@@ -44,22 +43,20 @@ sub await {
 }
 
 sub done_next_tick {
-	my $self = shift;
+	weaken(my $self = shift);
 	my @result = @_;
 	
-	weaken $self;
 	$self->loop->next_tick(sub { $self->done(@result) if $self });
 	
 	return $self;
 }
 
 sub fail_next_tick {
-	my $self = shift;
+	weaken(my $self = shift);
 	my ($exception, @details) = @_;
 	
 	croak 'Expected a true exception' unless $exception;
 	
-	weaken $self;
 	$self->loop->next_tick(sub { $self->fail($exception, @details) if $self });
 	
 	return $self;
@@ -95,15 +92,18 @@ For a full description on how to use Futures, see the L<Future> documentation.
 
 =head2 new
 
+ my $future = Future::Mojo->new;
  my $future = Future::Mojo->new($loop);
 
-Returns a new Future.
+Returns a new Future. Uses L<Mojo::IOLoop/"singleton"> if no loop is specified.
 
 =head2 new_timer
 
+ my $future = Future::Mojo->new_timer($seconds);
  my $future = Future::Mojo->new_timer($loop, $seconds);
 
-Returns a new Future that will become ready after the specified delay.
+Returns a new Future that will become ready after the specified delay. Uses
+L<Mojo::IOLoop/"singleton"> if no loop is specified.
 
 =head1 METHODS
 
