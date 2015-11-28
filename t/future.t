@@ -9,7 +9,7 @@ use Test::Identity;
 use Mojo::IOLoop;
 use Future::Mojo;
 
-my $loop = Mojo::IOLoop->new;
+my $loop = Mojo::IOLoop->singleton;
 
 {
 	my $future = Future::Mojo->new($loop);
