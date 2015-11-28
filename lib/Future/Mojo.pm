@@ -8,7 +8,7 @@ use Mojo::IOLoop;
 
 use parent 'Future';
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 sub new {
 	my $proto = shift;
