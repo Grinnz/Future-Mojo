@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Carp 'croak';
 use Scalar::Util 'weaken';
+use Mojo::IOLoop;
 
 use parent 'Future';
 
@@ -14,13 +15,14 @@ sub new {
 	my $self = $proto->SUPER::new;
 	
 	$self->{loop} = ref $proto ? $proto->{loop} : shift;
+        $self->{loop} = Mojo::IOLoop->singleton if (not defined $self->{loop});
 	
 	return $self;
 }
 
 sub new_timer {
 	my $proto = shift;
-	my $self = $proto->new(shift);
+	my $self = __PACKAGE__->new();
 	my ($after) = @_;
 	
 	my $weakself = $self;
