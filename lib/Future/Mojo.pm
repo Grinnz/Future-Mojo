@@ -147,6 +147,14 @@ Report any issues on the public bugtracker.
 
 Dan Book <dbook@cpan.org>
 
+=head1 CONTRIBUTORS
+
+=over
+
+=item Jose Luis Martinez (pplu)
+
+=back
+
 =head1 COPYRIGHT AND LICENSE
 
 This software is Copyright (c) 2015 by Dan Book.

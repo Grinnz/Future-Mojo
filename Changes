@@ -1,4 +1,5 @@
 {{$NEXT}}
+  - $loop parameter to constructors is now optional
 
 0.002     2015-09-30 13:05:41 EDT
   - await() will now throw an exception if the event loop is already running,
