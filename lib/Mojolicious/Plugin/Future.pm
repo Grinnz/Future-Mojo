@@ -17,7 +17,7 @@ sub register {
     my $fkey = "$f";
     $c->stash->{'mojo.plugin.future.stored'}{$fkey} = $f;
     weaken(my $weak_c = $c);
-    $f->on_ready(sub {
+    return $f->on_ready(sub {
       my $f = shift;
       if (defined $weak_c) {
         delete $weak_c->stash->{'mojo.plugin.future.stored'}{$fkey};
