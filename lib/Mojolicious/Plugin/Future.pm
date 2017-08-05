@@ -95,6 +95,17 @@ fails.
 
 Convenience method to return a new L<Future::Mojo> object.
 
+=head1 METHODS
+
+L<Mojolicious::Plugin::Future> inherits all methods from L<Mojolicious::Plugin>
+and implements the following new ones.
+
+=head2 register
+
+  $plugin->register(Mojolicious->new);
+
+Register helper in L<Mojolicious> application.
+
 =head1 BUGS
 
 Report any issues on the public bugtracker.
