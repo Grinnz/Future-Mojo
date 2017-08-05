@@ -80,7 +80,7 @@ L<Mojolicious::Plugin::DefaultHelpers/"delay">.
 
 =head2 adopt_future
 
-  $c->adopt_future($f);
+  $f = $c->adopt_future($f);
 
 Disables automatic rendering, stashes the Future in the current request, keeps
 a reference to L<Mojolicious::Controller/"tx"> in case the underlying
