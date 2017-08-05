@@ -1,4 +1,6 @@
 {{$NEXT}}
+  - Added Mojolicious::Plugin::Future, a plugin to make using Future in
+    Mojolicious applications more convenient
 
 0.003     2015-11-28 15:34:30 EST
   - $loop parameter to constructors is now optional
