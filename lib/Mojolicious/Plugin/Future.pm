@@ -22,7 +22,7 @@ sub register {
     return $f->on_ready(sub {
       my $f = shift;
       delete $futures{$fkey};
-      $weak_c->helpers->reply->exception($f->failure)
+      $weak_c->helpers->reply->exception(scalar $f->failure)
         if defined $weak_c and $f->is_failed;
       undef $tx;
     });
