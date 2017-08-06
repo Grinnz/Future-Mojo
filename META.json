@@ -62,10 +62,6 @@
       "Future::Mojo" : {
          "file" : "lib/Future/Mojo.pm",
          "version" : "0.004"
-      },
-      "Mojolicious::Plugin::Future" : {
-         "file" : "lib/Mojolicious/Plugin/Future.pm",
-         "version" : "0.004"
       }
    },
    "release_status" : "stable",
