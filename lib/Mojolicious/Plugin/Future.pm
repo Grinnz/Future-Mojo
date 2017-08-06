@@ -6,6 +6,8 @@ use Scalar::Util 'weaken';
 
 our $VERSION = '0.004';
 
+my %futures;
+
 sub register {
   my ($self, $app, $options) = @_;
   
@@ -15,14 +17,13 @@ sub register {
     my ($c, $f) = @_;
     my $tx = $c->render_later->tx;
     my $fkey = "$f";
-    $c->stash->{'mojo.plugin.future.stored'}{$fkey} = $f;
+    $futures{$fkey} = $f;
     weaken(my $weak_c = $c);
     return $f->on_ready(sub {
       my $f = shift;
-      if (defined $weak_c) {
-        delete $weak_c->stash->{'mojo.plugin.future.stored'}{$fkey};
-        $weak_c->helpers->reply->exception($f->failure) if $f->is_failed;
-      }
+      delete $futures{$fkey};
+      $weak_c->helpers->reply->exception($f->failure)
+        if defined $weak_c and $f->is_failed;
       undef $tx;
     });
   });
@@ -82,11 +83,10 @@ L<Mojolicious::Plugin::DefaultHelpers/"delay">.
 
   $f = $c->adopt_future($f);
 
-Disables automatic rendering, stashes the Future in the current request, keeps
-a reference to L<Mojolicious::Controller/"tx"> in case the underlying
-connection gets closed early, and calls
-L<< Mojolicious::Plugin::DefaultHelpers/"reply->exception" >> if the Future
-fails.
+Disables automatic rendering, stores the Future instance, keeps a reference to
+L<Mojolicious::Controller/"tx"> in case the underlying connection gets closed
+early, and calls L<< Mojolicious::Plugin::DefaultHelpers/"reply->exception" >>
+if the Future fails.
 
 =head2 future
 
