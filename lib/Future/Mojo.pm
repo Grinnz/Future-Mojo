@@ -56,9 +56,7 @@ sub loop { shift->{loop} }
 
 sub await {
 	my $self = shift;
-	croak 'Awaiting a future while the event loop is running would recurse'
-		if $self->{loop}->is_running;
-	$self->{loop}->one_tick until $self->is_ready;
+	$self->{loop}->singleton->reactor->one_tick until $self->is_ready;
 }
 
 sub done_next_tick {
