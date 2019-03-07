@@ -1,6 +1,6 @@
 requires 'perl' => '5.010001';
 requires 'Carp';
-requires 'Future' => '0.33';
+requires 'Future' => '0.36';
 requires 'Mojolicious' => '7.54';
 requires 'parent';
 requires 'Role::Tiny' => '2.000002';

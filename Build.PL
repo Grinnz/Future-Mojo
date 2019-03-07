@@ -90,7 +90,7 @@ EOW
       "recursive_test_files" => 1,
       "requires" => {
         "Carp" => 0,
-        "Future" => "0.33",
+        "Future" => "0.36",
         "Mojolicious" => "7.54",
         "Role::Tiny" => "2.000002",
         "Scalar::Util" => 0,

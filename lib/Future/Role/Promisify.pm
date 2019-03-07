@@ -5,7 +5,7 @@ use Role::Tiny;
 
 our $VERSION = '1.000';
 
-requires qw(on_done on_fail);
+requires qw(on_done on_fail retain);
 
 sub promisify {
   my $self = shift;
