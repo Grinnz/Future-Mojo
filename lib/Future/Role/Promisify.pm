@@ -32,7 +32,7 @@ use Role::Tiny ();
 my $loop = IO::Async::Loop::Mojo->new;
 my $future = $loop->timeout_future(after => 5);
 Role::Tiny->apply_roles_to_object($future, 'Future::Role::Promisify');
-$future->promisify->then(sub { say 'Resolved' }, sub { say 'Rejected' })->wait;
+$future->promisify->then(sub { say 'Resolved' })->catch(sub { warn 'Rejected' })->wait;
 
 use Future::Mojo;
 use Mojo::IOLoop;
