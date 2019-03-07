@@ -8,9 +8,11 @@ our $VERSION = '1.000';
 requires qw(on_done on_fail retain);
 
 sub promisify {
-  my $self = shift;
-  my $p = Mojo::Promise->new;
-  $p->ioloop($self->loop) if $self->isa('Future::Mojo');
+  my ($self, $p) = @_;
+  unless (defined $p) {
+    $p = Mojo::Promise->new;
+    $p->ioloop($self->loop) if $self->isa('Future::Mojo');
+  }
   $self->on_done(sub { $p->resolve(@_) })
        ->on_fail(sub { $p->reject(@_) })->retain;
   return $p;
@@ -54,15 +56,24 @@ L<Future::Role::Promisify> composes the following methods.
   my $promise = $future->promisify;
 
 Returns a L<Mojo::Promise> object that will resolve or reject when the
-L<Future> becomes ready.
+L<Future> becomes ready. It will be assigned the L<Mojo::IOLoop> of the
+Future if it is an instance of L<Future::Mojo>.
+
+If the Future is not immediately ready or an instance of L<Future::Mojo>, it
+must be an instance of a Future that uses the L<Mojo::IOLoop> singleton, such
+as an L<IO::Async::Future> from the L<IO::Async::Loop::Mojo> loop. In any other
+circumstances, the resulting L<Mojo::Promise> may not be able to settle the
+Future.
+
+If a promise object is passed, it will be used and returned instead of
+constructing a new L<Mojo::Promise>. It may be an object of any class that has
+a standard Promises/A+ API (in particular C<resolve> and C<reject> methods),
+but you are responsible for ensuring that it uses the correct event loop to
+settle the Future if needed.
+
+  $promise = $future->promisify($promise);
 
 =head1 CAVEATS
-
-If the Future is not immediately ready, it must be an instance of
-L<Future::Mojo>, or otherwise a Future subclass using the L<Mojo::IOLoop>
-singleton such as an L<IO::Async::Future> from the L<IO::Async::Loop::Mojo>
-loop. In any other circumstances, the resulting promise may not be able to
-resolve.
 
 Cancelling the preceding Future chain may lead to unspecified behavior.
 
