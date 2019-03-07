@@ -83,6 +83,12 @@ A shortcut to calling the L<Future/"fail"> method on the
 L<Mojo::IOLoop/"next_tick">. Ensures that a returned Future object is not ready
 immediately, but will wait for the next I/O round.
 
+=head2 promisify
+
+ my $promise = $future->promisify;
+
+Composed from L<Future::Role::Promisify>.
+
 =head1 BUGS
 
 Report any issues on the public bugtracker.
