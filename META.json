@@ -602,6 +602,6 @@
       "Jose Luis Martinez <jlmartinez@capside.com>"
    ],
    "x_generated_by_perl" : "v5.28.1",
-   "x_serialization_backend" : "Cpanel::JSON::XS version 4.08"
+   "x_serialization_backend" : "Cpanel::JSON::XS version 4.09"
 }
 
