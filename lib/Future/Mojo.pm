@@ -9,7 +9,7 @@ use Role::Tiny::With;
 
 use parent 'Future';
 
-our $VERSION = '1.002';
+our $VERSION = '1.003';
 
 with 'Future::Role::Promisify';
 
