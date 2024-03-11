@@ -3,7 +3,7 @@ package Future::Role::Promisify;
 use Mojo::Promise;
 use Role::Tiny;
 
-our $VERSION = '1.003';
+our $VERSION = '1.004';
 
 requires qw(on_done on_fail retain);
 
